@@ -1,0 +1,180 @@
+local Players = game:GetService("Players")
+local ChatService = game:GetService("Chat")            -- only used for bubble chat
+local TextChatService = game:GetService("TextChatService")
+local UserInputService = game:GetService("UserInputService")
+
+local localPlayer = Players.LocalPlayer
+
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MessageGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = localPlayer:WaitForChild("PlayerGui")
+
+-- Main frame (draggable + input fields)
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 300, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainFrame.BorderSizePixel = 2
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Visible = false
+mainFrame.Parent = screenGui
+
+-- Close button (inside the main frame)
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Size = UDim2.new(0, 50, 0, 25)
+closeButton.Position = UDim2.new(1, -55, 0, 5)
+closeButton.Text = "X"
+closeButton.TextScaled = true
+closeButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+closeButton.Parent = mainFrame
+
+-- Name label
+local nameLabel = Instance.new("TextLabel")
+nameLabel.Text = "Name/Display"
+nameLabel.Size = UDim2.new(0, 100, 0, 25)
+nameLabel.Position = UDim2.new(0, 10, 0, 10)
+nameLabel.BackgroundTransparency = 1
+nameLabel.TextColor3 = Color3.new(1,1,1)
+nameLabel.Parent = mainFrame
+
+-- TextBox for name entry
+local nameInput = Instance.new("TextBox")
+nameInput.Size = UDim2.new(0, 200, 0, 25)
+nameInput.Position = UDim2.new(0, 10, 0, 35)
+nameInput.PlaceholderText = "Enter partial or full name"
+nameInput.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+nameInput.Text = ""
+nameInput.Parent = mainFrame
+
+-- Message label
+local messageLabel = Instance.new("TextLabel")
+messageLabel.Text = "Message"
+messageLabel.Size = UDim2.new(0, 100, 0, 25)
+messageLabel.Position = UDim2.new(0, 10, 0, 70)
+messageLabel.BackgroundTransparency = 1
+messageLabel.TextColor3 = Color3.new(1,1,1)
+messageLabel.Parent = mainFrame
+
+-- TextBox for message entry
+local messageInput = Instance.new("TextBox")
+messageInput.Size = UDim2.new(0, 200, 0, 50)
+messageInput.Position = UDim2.new(0, 10, 0, 95)
+messageInput.PlaceholderText = "Enter your message"
+messageInput.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+messageInput.TextWrapped = true
+messageInput.TextYAlignment = Enum.TextYAlignment.Top
+messageInput.Text = ""
+messageInput.Parent = mainFrame
+
+-- "Send" button
+local sendButton = Instance.new("TextButton")
+sendButton.Name = "SendButton"
+sendButton.Size = UDim2.new(0, 80, 0, 30)
+sendButton.Position = UDim2.new(0.5, -40, 1, -40)
+sendButton.Text = "Send"
+sendButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+sendButton.Parent = mainFrame
+
+-- Small toggle button on-screen
+local toggleButton = Instance.new("TextButton")
+toggleButton.Name = "ToggleButton"
+toggleButton.Size = UDim2.new(0, 50, 0, 30)
+toggleButton.Position = UDim2.new(0, 10, 0.5, -15)
+toggleButton.Text = "Open"
+toggleButton.Parent = screenGui
+
+--------------------------------------------------------------------------------
+-- Cache the System channel for display messages
+--------------------------------------------------------------------------------
+local textChannels = TextChatService:WaitForChild("TextChannels")
+local systemChannel = textChannels:WaitForChild("RBXSystem")  -- or "RBXGeneral"
+
+--------------------------------------------------------------------------------
+-- Utility: toggle GUI visibility
+--------------------------------------------------------------------------------
+local function toggleMainFrame()
+    mainFrame.Visible = not mainFrame.Visible
+    toggleButton.Text = mainFrame.Visible and "Close" or "Open"
+end
+
+toggleButton.MouseButton1Click:Connect(toggleMainFrame)
+closeButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = false
+    toggleButton.Text = "Open"
+end)
+
+-- Convert Color3 to hex (if you ever need it)
+local function Color3ToHex(color)
+    return string.format("#%02X%02X%02X",
+        math.floor(color.R * 255),
+        math.floor(color.G * 255),
+        math.floor(color.B * 255)
+    )
+end
+
+--------------------------------------------------------------------------------
+-- Send button logic: bubble + system message with colored name + white text
+--------------------------------------------------------------------------------
+sendButton.MouseButton1Click:Connect(function()
+    local pName = nameInput.Text
+    local msg = messageInput.Text
+    
+    if pName == "" or msg == "" then
+        warn("Please fill in both the name and the message.")
+        return
+    end
+
+    -- Find the target player
+    local targetPlayer = Players:FindFirstChild(pName)
+    if not targetPlayer then
+        for _, p in ipairs(Players:GetPlayers()) do
+            local d, n = p.DisplayName:lower(), p.Name:lower()
+            if d:find(pName:lower()) or n:find(pName:lower()) then
+                targetPlayer = p
+                break
+            end
+        end
+    end
+    if not targetPlayer then
+        warn("No matching player found for:", pName)
+        return
+    end
+
+    -- Determine player's team color or default white
+    local chatColor = (targetPlayer.Team and targetPlayer.Team.TeamColor.Color) or Color3.new(1,1,1)
+    local r, g, b = math.floor(chatColor.R * 255), math.floor(chatColor.G * 255), math.floor(chatColor.B * 255)
+
+    -- Optional chat bubble
+    if targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
+        ChatService:Chat(targetPlayer.Character.Head, msg, Enum.ChatColor.White)
+    end
+
+    -- Build colored name tag and white message tag
+    local nameTag = string.format(
+        '<font color="rgb(%d, %d, %d)">[%s]:</font> ',
+        r, g, b,
+        targetPlayer.DisplayName or targetPlayer.Name
+    )
+    local msgTag = string.format(
+        '<font color="rgb(255, 255, 255)">%s</font>',
+        msg
+    )
+
+    -- Display in system chat
+    systemChannel:DisplaySystemMessage(nameTag .. msgTag)
+end)
+
+-- PC hotkey toggle (C)
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.C 
+      and UserInputService.MouseEnabled 
+      and UserInputService.KeyboardEnabled then
+        toggleMainFrame()
+    end
+end)
