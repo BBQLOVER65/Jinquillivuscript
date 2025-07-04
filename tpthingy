@@ -1,0 +1,1305 @@
+-- Main GUI Setup
+local gui = Instance.new("ScreenGui")
+gui.Name = "EnhancedWashiezHub"
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- Main Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 430, 0, 600)
+mainFrame.Position = UDim2.new(0.5, -215, 0.5, -300)
+mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = gui
+
+-- Rounded corners
+local mainUICorner = Instance.new("UICorner")
+mainUICorner.CornerRadius = UDim.new(0, 14)
+mainUICorner.Parent = mainFrame
+
+-- Create the gradient with light green colors
+local gradient = Instance.new("UIGradient")
+gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(230, 230, 230)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(235, 235, 235)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(191, 191, 191))
+}
+gradient.Rotation = 45
+gradient.Parent = mainFrame
+
+-- Create glowing effect and animation frames
+local function createGlowEffect()
+    local glow = Instance.new("ImageLabel")
+    glow.Name = "GlowEffect"
+    glow.BackgroundTransparency = 1
+    glow.Size = UDim2.new(1, 30, 1, 30)
+    glow.Position = UDim2.new(0, -15, 0, -15)
+    glow.Image = "rbxassetid://1316045217" -- Radial gradient image
+    glow.ImageColor3 = Color3.fromRGB(250, 152, 152)
+    glow.ImageTransparency = 0.7
+    glow.Parent = mainFrame
+    glow.ZIndex = 0
+    
+    -- Animation for glow and frame
+    spawn(function()
+        local TweenService = game:GetService("TweenService")
+        
+        -- Frame float animation
+        spawn(function()
+            while mainFrame.Parent do
+                local floatUp = TweenService:Create(
+                    mainFrame, 
+                    TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Position = UDim2.new(0.5, -215, 0.5, -305)}
+                )
+                
+                local floatDown = TweenService:Create(
+                    mainFrame, 
+                    TweenInfo.new(3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Position = UDim2.new(0.5, -215, 0.5, -295)}
+                )
+                
+                floatUp:Play()
+                wait(3)
+                floatDown:Play()
+                wait(3)
+            end
+        end)
+        
+        -- Glow pulsing animation
+        while glow.Parent do
+            local fadeOut = TweenService:Create(
+                glow, 
+                TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                {ImageTransparency = 0.9}
+            )
+            
+            local fadeIn = TweenService:Create(
+                glow, 
+                TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                {ImageTransparency = 0.6}
+            )
+            
+            -- Gradient rotation animation
+            local rotateGradient = TweenService:Create(
+                gradient, 
+                TweenInfo.new(8, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), 
+                {Rotation = gradient.Rotation + 90}
+            )
+            
+            fadeOut:Play()
+            rotateGradient:Play()
+            wait(2.5)
+            fadeIn:Play()
+            wait(2.5)
+        end
+    end)
+end
+
+createGlowEffect()
+
+-- Header section with glass effect
+local header = Instance.new("Frame")
+header.Name = "Header"
+header.Size = UDim2.new(1, 0, 0, 90)
+header.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+header.BackgroundTransparency = 0.9
+header.BorderSizePixel = 0
+header.Parent = mainFrame
+
+local headerCorner = Instance.new("UICorner")
+headerCorner.CornerRadius = UDim.new(0, 14)
+headerCorner.Parent = header
+
+-- Logo/Icon
+local logoContainer = Instance.new("Frame")
+logoContainer.Name = "LogoContainer"
+logoContainer.Size = UDim2.new(0, 70, 0, 70)
+logoContainer.Position = UDim2.new(0, 15, 0, 10)
+logoContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+logoContainer.BackgroundTransparency = 0.5
+logoContainer.BorderSizePixel = 0
+logoContainer.Parent = header
+
+local logoCorner = Instance.new("UICorner")
+logoCorner.CornerRadius = UDim.new(1, 0) -- Makes it circular
+logoCorner.Parent = logoContainer
+
+local logo = Instance.new("TextLabel")
+logo.Name = "Logo"
+logo.Size = UDim2.new(1, 0, 1, 0)
+logo.BackgroundTransparency = 1
+logo.Text = "🛸"
+logo.Font = Enum.Font.GothamBold
+logo.TextColor3 = Color3.fromRGB(245, 39, 32)
+logo.TextSize = 40
+logo.Parent = logoContainer
+
+-- Create glow for the logo
+local logoGlow = Instance.new("ImageLabel")
+logoGlow.Name = "LogoGlow"
+logoGlow.BackgroundTransparency = 1
+logoGlow.Size = UDim2.new(1.5, 0, 1.5, 0)
+logoGlow.Position = UDim2.new(-0.25, 0, -0.25, 0)
+logoGlow.Image = "rbxassetid://1316045217"
+logoGlow.ImageColor3 = Color3.fromRGB(255, 0, 0)
+logoGlow.ImageTransparency = 0.6
+logoGlow.ZIndex = 0
+logoGlow.Parent = logoContainer
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Name = "Title"
+title.Text = "Bloxton Teleporter"
+title.Font = Enum.Font.GothamBold
+title.TextColor3 = Color3.fromRGB(0, 0, 0)
+title.TextSize = 26
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Size = UDim2.new(0, 250, 0, 40)
+title.Position = UDim2.new(0, 100, 0, 15)
+title.BackgroundTransparency = 1
+title.Parent = header
+
+-- Subtitle
+local subtitle = Instance.new("TextLabel")
+subtitle.Name = "Subtitle"
+subtitle.Text = "Teleport across to wherever you need to be"
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextColor3 = Color3.fromRGB(0, 0, 0)
+subtitle.TextSize = 14
+subtitle.TextXAlignment = Enum.TextXAlignment.Left
+subtitle.Size = UDim2.new(0, 250, 0, 20)
+subtitle.Position = UDim2.new(0, 100, 0, 50)
+subtitle.BackgroundTransparency = 1
+subtitle.Parent = header
+
+-- Close Button
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Text = "×"
+closeButton.Size = UDim2.new(0, 40, 0, 40)
+closeButton.Position = UDim2.new(1, -50, 0, 10)
+closeButton.BackgroundColor3 = Color3.fromRGB(245, 39, 32)
+closeButton.BackgroundTransparency = 0.3
+closeButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 30
+closeButton.Parent = header
+
+local closeUICorner = Instance.new("UICorner")
+closeUICorner.CornerRadius = UDim.new(0, 10)
+closeUICorner.Parent = closeButton
+
+-- Button container
+local buttonContainer = Instance.new("ScrollingFrame")
+buttonContainer.Name = "ButtonContainer"
+buttonContainer.Size = UDim2.new(1, -40, 1, -160)
+buttonContainer.Position = UDim2.new(0, 20, 0, 110)
+buttonContainer.BackgroundTransparency = 1
+buttonContainer.BorderSizePixel = 0
+buttonContainer.ScrollBarThickness = 6
+buttonContainer.ScrollBarImageColor3 = Color3.fromRGB(245, 39, 32)
+buttonContainer.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be set dynamically
+buttonContainer.Parent = mainFrame
+
+-- Close button functionality
+closeButton.MouseButton1Click:Connect(function()
+    local TweenService = game:GetService("TweenService")
+    local fadeOut = TweenService:Create(
+        mainFrame,
+        TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+        {Position = UDim2.new(0.5, -215, 1.5, 0)}
+    )
+    fadeOut:Play()
+    fadeOut.Completed:Connect(function()
+        gui:Destroy()
+    end)
+end)
+
+-- Button creation function with hover effects
+local function createButton(name, scriptFunc, index)
+    local button = Instance.new("Frame")
+    button.Name = name .. "Button"
+    button.Size = UDim2.new(1, 0, 0, 50)
+    button.Position = UDim2.new(0, 0, 0, (index - 1) * 60)
+    button.BackgroundColor3 = Color3.fromRGB(245, 39, 32)
+    button.BackgroundTransparency = 0.7
+    button.BorderSizePixel = 0
+    button.Parent = buttonContainer
+
+    local buttonUICorner = Instance.new("UICorner")
+    buttonUICorner.CornerRadius = UDim.new(0, 10)
+    buttonUICorner.Parent = button
+
+    local buttonStroke = Instance.new("UIStroke")
+    buttonStroke.Color = Color3.fromRGB(245, 39, 32)
+    buttonStroke.Thickness = 1
+    buttonStroke.Transparency = 0.5
+    buttonStroke.Parent = button
+
+    local buttonGradient = Instance.new("UIGradient")
+    buttonGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(245, 39, 32)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(245, 39, 32))
+    }
+    buttonGradient.Rotation = 90
+    buttonGradient.Parent = button
+
+    local buttonIcon = Instance.new("TextLabel")
+    buttonIcon.Name = "Icon"
+    buttonIcon.Text = "•"
+    buttonIcon.Size = UDim2.new(0, 50, 0, 50)
+    buttonIcon.Font = Enum.Font.GothamBold
+    buttonIcon.TextColor3 = Color3.fromRGB(255, 0, 0)
+    buttonIcon.TextSize = 30
+    buttonIcon.BackgroundTransparency = 1
+    buttonIcon.Parent = button
+
+    local buttonText = Instance.new("TextLabel")
+    buttonText.Name = "ButtonText"
+    buttonText.Text = name
+    buttonText.Size = UDim2.new(1, -60, 1, 0)
+    buttonText.Position = UDim2.new(0, 50, 0, 0)
+    buttonText.Font = Enum.Font.Gotham
+    buttonText.TextColor3 = Color3.fromRGB(0, 0, 0)
+    buttonText.TextSize = 18
+    buttonText.TextXAlignment = Enum.TextXAlignment.Left
+    buttonText.BackgroundTransparency = 1
+    buttonText.Parent = button
+
+    -- Clickable area
+    local buttonClick = Instance.new("TextButton")
+    buttonClick.Name = "ClickArea"
+    buttonClick.Size = UDim2.new(1, 0, 1, 0)
+    buttonClick.BackgroundTransparency = 1
+    buttonClick.Text = ""
+    buttonClick.Parent = button
+
+    -- Hover effects
+    buttonClick.MouseEnter:Connect(function()
+        local TweenService = game:GetService("TweenService")
+        TweenService:Create(button, TweenInfo.new(0.3), {BackgroundTransparency = 0.4}):Play()
+        TweenService:Create(buttonStroke, TweenInfo.new(0.3), {Transparency = 0}):Play()
+        TweenService:Create(buttonText, TweenInfo.new(0.3), {TextSize = 19}):Play()
+        TweenService:Create(buttonIcon, TweenInfo.new(0.3), {TextSize = 32}):Play()
+    end)
+
+    buttonClick.MouseLeave:Connect(function()
+        local TweenService = game:GetService("TweenService")
+        TweenService:Create(button, TweenInfo.new(0.3), {BackgroundTransparency = 0.7}):Play()
+        TweenService:Create(buttonStroke, TweenInfo.new(0.3), {Transparency = 0.5}):Play()
+        TweenService:Create(buttonText, TweenInfo.new(0.3), {TextSize = 18}):Play()
+        TweenService:Create(buttonIcon, TweenInfo.new(0.3), {TextSize = 30}):Play()
+    end)
+
+    -- Click effect and function
+    buttonClick.MouseButton1Down:Connect(function()
+        local TweenService = game:GetService("TweenService")
+        TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(0.98, 0, 0, 48), Position = UDim2.new(0.01, 0, 0, (index - 1) * 60 + 1)}):Play()
+    end)
+
+    buttonClick.MouseButton1Up:Connect(function()
+        local TweenService = game:GetService("TweenService")
+        TweenService:Create(button, TweenInfo.new(0.1), {Size = UDim2.new(1, 0, 0, 50), Position = UDim2.new(0, 0, 0, (index - 1) * 60)}):Play()
+        
+        -- Success indicator
+        local success = Instance.new("Frame")
+        success.Size = UDim2.new(0, 0, 1, 0)
+        success.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        success.BackgroundTransparency = 0.7
+        success.BorderSizePixel = 0
+        success.ZIndex = 3
+        success.Parent = button
+        
+        local successCorner = Instance.new("UICorner")
+        successCorner.CornerRadius = UDim.new(0, 10)
+        successCorner.Parent = success
+        
+        local TweenService = game:GetService("TweenService")
+        TweenService:Create(success, TweenInfo.new(0.3), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+        
+        -- Execute the function
+        scriptFunc()
+        
+        -- Remove the success indicator
+        spawn(function()
+            wait(0.5)
+            TweenService:Create(success, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
+            wait(0.3)
+            success:Destroy()
+        end)
+    end)
+
+    return button
+end
+
+-- Add all the buttons (original + new scripts)
+local buttons = {
+ {name = "Inside Snack Bar (Noclip)", script = function() -- BUTTONS START HERE N SHYIGGFTUCYUFVHYJBKUGG*OIGYUHOLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKk
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(57.5, 44, 22)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Outside Snack Bar", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(90, 44, 25)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Receptionist Lane", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(130, 44, 71)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Lobby", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(111, 44, 90)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Cube Statues", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(98, 52, 161)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Gym", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(38, 45, 189)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Spa", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(98, 44, 208)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Arcade (Noclip)", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(218, 44, 158)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Staff Room (Noclip)", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(188, 45, 153)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Housekeeping (Noclip)", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(144, 44, 156)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Receptionist (Noclip)", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(151, 44, 72)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Spawn", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(-36, 44, 57)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "On Top Of The Arch", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(25, 170, 7)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Pool", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(200, 44, 42)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Camping", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(270, 46, -142)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Floor 2", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(98, 64, 83)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Floor 3", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(97, 77, 83)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Floor 4", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(97, 89, 83)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Floor 5", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(96, 102, 82)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Floor 6", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(98, 115, 81)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Rooftop (Noclip)", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(134, 137, 40)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Bungalows", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(-143, 37, -294)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Water Cave", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(-90, 28, -171)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+ {name = "Secret Room", script = function() 
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            rootPart.CFrame = CFrame.new(83, 44, -193)
+        end
+
+        teleportPlayer()
+
+        player.CharacterAdded:Connect(teleportPlayer)
+end},
+
+}
+
+-- yes i knwo theres prob an easier way or sm but im not bothered to find one
+
+
+-- Create all buttons
+for i, buttonInfo in ipairs(buttons) do
+    createButton(buttonInfo.name, buttonInfo.script, i)
+end
+
+-- Set the canvas size based on the number of buttons
+buttonContainer.CanvasSize = UDim2.new(0, 0, 0, #buttons * 60)
+
+-- Hide Button with more aesthetic design
+local hideButton = Instance.new("TextButton")
+hideButton.Name = "HideButton"
+hideButton.Text = "Hide GUI"
+hideButton.Size = UDim2.new(0, 150, 0, 40)
+hideButton.Position = UDim2.new(0.5, -75, 1, -60)
+hideButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+hideButton.TextColor3 = Color3.fromRGB(245, 39, 32)
+hideButton.Font = Enum.Font.GothamBold
+hideButton.TextSize = 16
+hideButton.Parent = mainFrame
+
+local hideUICorner = Instance.new("UICorner")
+hideUICorner.CornerRadius = UDim.new(0, 8)
+hideUICorner.Parent = hideButton
+
+local hideButtonStroke = Instance.new("UIStroke")
+hideButtonStroke.Color = Color3.fromRGB(245, 39, 32)
+hideButtonStroke.Thickness = 1
+hideButtonStroke.Transparency = 0.5
+hideButtonStroke.Parent = hideButton
+
+local hideButtonGradient = Instance.new("UIGradient")
+hideButtonGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(245, 39, 32)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
+}
+hideButtonGradient.Rotation = 90
+hideButtonGradient.Parent = hideButton
+
+-- Unhide mini-button
+local unhideButton = Instance.new("TextButton")
+unhideButton.Name = "UnhideButton"
+unhideButton.Text = "Show GUI"
+unhideButton.Size = UDim2.new(0, 100, 0, 30)
+unhideButton.Position = UDim2.new(0.02, 0, 0.85, 0)
+unhideButton.BackgroundColor3 = Color3.fromRGB(245, 39, 32)
+unhideButton.TextColor3 = Color3.fromRGB(224, 224, 224)
+unhideButton.Font = Enum.Font.GothamBold
+unhideButton.TextSize = 14
+unhideButton.Visible = false
+unhideButton.Parent = gui
+
+local unhideCorner = Instance.new("UICorner")
+unhideCorner.CornerRadius = UDim.new(0, 8)
+unhideCorner.Parent = unhideButton
+
+-- Glow effect for unhide button
+local unhideGlow = Instance.new("ImageLabel")
+unhideGlow.Name = "UnhideGlow"
+unhideGlow.BackgroundTransparency = 1
+unhideGlow.Size = UDim2.new(1.3, 0, 1.3, 0)
+unhideGlow.Position = UDim2.new(-0.15, 0, -0.15, 0)
+unhideGlow.Image = "rbxassetid://1316045217"
+unhideGlow.ImageColor3 = Color3.fromRGB(245, 39, 32)
+unhideGlow.ImageTransparency = 0.7
+unhideGlow.ZIndex = 0
+unhideGlow.Parent = unhideButton
+
+-- Pulsing animation for unhide button
+spawn(function()
+    local TweenService = game:GetService("TweenService")
+    while true do
+        if unhideButton.Visible then
+            local pulse1 = TweenService:Create(
+                unhideGlow,
+                TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                {ImageTransparency = 0.5}
+            )
+            
+            local pulse2 = TweenService:Create(
+                unhideGlow,
+                TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                {ImageTransparency = 0.8}
+            )
+            
+            pulse1:Play()
+            wait(1.5)
+            pulse2:Play()
+            wait(1.5)
+        else
+            wait(0.5)
+        end
+    end
+end)
+
+-- Hide/Show functionality
+hideButton.MouseButton1Click:Connect(function()
+    local TweenService = game:GetService("TweenService")
+    
+    -- Slide out animation
+    local slideOut = TweenService:Create(
+        mainFrame,
+        TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In),
+        {Position = UDim2.new(1.2, 0, 0.5, -300)}
+    )
+    
+    slideOut:Play()
+    slideOut.Completed:Connect(function()
+        mainFrame.Visible = false
+        unhideButton.Visible = true
+    end)
+end)
+
+unhideButton.MouseButton1Click:Connect(function()
+    mainFrame.Position = UDim2.new(-0.7, 0, 0.5, -300)
+    mainFrame.Visible = true
+    unhideButton.Visible = false
+    
+    local TweenService = game:GetService("TweenService")
+    
+    -- Slide in animation
+    local slideIn = TweenService:Create(
+        mainFrame,
+        TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+        {Position = UDim2.new(0.5, -215, 0.5, -300)}
+    )
+    
+    slideIn:Play()
+end)
+
+-- Staff detector notifications
+spawn(function()
+    while wait(10) do -- Check every 10 seconds instead of 2 for better performance
+        local Players = game:GetService("Players")
+        
+        -- Check for directors
+        for _, player in ipairs(Players:GetPlayers()) do
+            local groupInfo = player:FindFirstChild("GroupInfo")
+            if groupInfo then
+                local role = groupInfo:FindFirstChild("Role")
+                if role and string.find(role.Value:lower(), "director") then
+                    -- Create a more modern notification
+                    local notif = Instance.new("Frame")
+                    notif.Name = "StaffNotif"
+                    notif.Size = UDim2.new(0, 250, 0, 60)
+                    notif.Position = UDim2.new(0.98, -255, 0.15, 0)
+                    notif.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+                    notif.BorderSizePixel = 0
+                    notif.Parent = gui
+                    
+                    local notifCorner = Instance.new("UICorner")
+                    notifCorner.CornerRadius = UDim.new(0, 8)
+                    notifCorner.Parent = notif
+                    
+                    local notifStroke = Instance.new("UIStroke")
+                    notifStroke.Color = Color3.fromRGB(255, 0, 0) -- Red for director
+                    notifStroke.Thickness = 2
+                    notifStroke.Parent = notif
+                    
+                    local title = Instance.new("TextLabel")
+                    title.Name = "Title"
+                    title.Text = "⚠️ Director Detected!"
+                    title.Size = UDim2.new(1, -20, 0, 20)
+                    title.Position = UDim2.new(0, 10, 0, 5)
+                    title.Font = Enum.Font.GothamBold
+                    title.TextColor3 = Color3.fromRGB(255, 80, 80)
+                    title.TextSize = 14
+                    title.TextXAlignment = Enum.TextXAlignment.Left
+                    title.BackgroundTransparency = 1
+                    title.Parent = notif
+                    
+                    local username = Instance.new("TextLabel")
+                    username.Name = "Username"
+                    username.Text = player.Name
+                    username.Size = UDim2.new(1, -20, 0, 20)
+                    username.Position = UDim2.new(0, 10, 0, 30)
+                    username.Font = Enum.Font.Gotham
+                    username.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    username.TextSize = 12
+                    username.TextXAlignment = Enum.TextXAlignment.Left
+                    username.BackgroundTransparency = 1
+                    username.Parent = notif
+                    
+                    -- Automatically remove after 4 seconds
+                    spawn(function()
+                        wait(3.5)
+                        local TweenService = game:GetService("TweenService")
+                        local fadeOut = TweenService:Create(
+                            notif,
+                            TweenInfo.new(0.5),
+                            {Position = UDim2.new(1.1, 0, 0.15, 0)}
+                        )
+                        fadeOut:Play()
+                        wait(0.5)
+                        notif:Destroy()
+                    end)
+                end
+            end
+        end
+        
+        -- Similar check for corporate roles can be added here
+    end
+end)
+
+-- Entrance animation
+mainFrame.Position = UDim2.new(0.5, -215, -0.5, -300)
+mainFrame.Visible = true
+
+-- Fade in with bounce effect
+local TweenService = game:GetService("TweenService")
+local entranceTween = TweenService:Create(
+    mainFrame,
+    TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out),
+    {Position = UDim2.new(0.5, -215, 0.5, -300)}
+)
+entranceTween:Play()
