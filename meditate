@@ -1,0 +1,63 @@
+      if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
+        local humanoidDescription = humanoid:WaitForChild("HumanoidDescription")
+        local hum = character:FindFirstChildOfClass("Humanoid")
+        local contextActionService = game:GetService("ContextActionService")
+        local JUMP_HEIGHT = 7.2  
+        local JUMP_COOLDOWN = 0.5 
+
+        local canJump = true  
+        local function onJumpAction(actionName, inputState, inputObject)
+            if inputState == Enum.UserInputState.Begin and canJump then
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid and (humanoid:GetState() == Enum.HumanoidStateType.Freefall or humanoid:GetState() == Enum.HumanoidStateType.Seated) then
+                    return
+                end
+
+                local jumpVelocity = math.sqrt(2 * workspace.Gravity * JUMP_HEIGHT)
+
+                humanoidRootPart.Velocity = Vector3.new(humanoidRootPart.Velocity.X, jumpVelocity, humanoidRootPart.Velocity.Z)
+
+                canJump = false
+
+                spawn(function()
+                    wait(JUMP_COOLDOWN)
+                    canJump = true  
+                end)
+            end
+        end
+
+        -- Define emote name and ID
+        local emoteName = "CustomEmote"
+        local emoteId = 12507097350
+
+        -- Register emote
+        local emotes = humanoidDescription:GetEmotes()
+        emotes[emoteName] = {emoteId}
+        humanoidDescription:SetEmotes(emotes)
+        -- Play the emote
+        local success, err = humanoid:PlayEmote(emoteName)
+        if not success then
+            warn("Failed to play emote:", err)
+        end
+
+        -- Wait 2 seconds, then pause active animations
+        task.delay(0, function()
+            local hum = character:FindFirstChildOfClass("Humanoid") or character:FindFirstChildOfClass("AnimationController")
+            for _, track in pairs(hum:GetPlayingAnimationTracks()) do
+        hum.HipHeight = 0.4
+                character.Animate.Disabled = true
+                track.TimePosition = 140
+                track:AdjustSpeed(0)
+            end
+        end)
