@@ -339,7 +339,7 @@ end
 
 -- Add all the buttons (original + new scripts)
 local buttons = {
- {name = "Inside Snack Bar (Noclip)", script = function() -- BUTTONS START HERE N SHYIGGFTUCYUFVHYJBKUGG*OIGYUHOLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKk
+ {name = "Inside Snack Bar", script = function() -- BUTTONS START HERE N SHYIGGFTUCYUFVHYJBKUGG*OIGYUHOLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKk
         if not game:IsLoaded() then
             game.Loaded:Wait()
         end
@@ -363,68 +363,6 @@ local buttons = {
             end
 
             rootPart.CFrame = CFrame.new(57.5, 44, 22)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Outside Snack Bar", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(90, 44, 25)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Receptionist Lane", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(130, 44, 71)
         end
 
         teleportPlayer()
@@ -463,131 +401,7 @@ end},
         player.CharacterAdded:Connect(teleportPlayer)
 end},
 
- {name = "Cube Statues", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(98, 52, 161)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Gym", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(38, 45, 189)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Spa", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(98, 44, 208)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Arcade (Noclip)", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(218, 44, 158)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Staff Room (Noclip)", script = function() 
+ {name = "Staff Room", script = function() 
         if not game:IsLoaded() then
             game.Loaded:Wait()
         end
@@ -618,7 +432,7 @@ end},
         player.CharacterAdded:Connect(teleportPlayer)
 end},
 
- {name = "Housekeeping (Noclip)", script = function() 
+ {name = "Housekeeping", script = function() 
         if not game:IsLoaded() then
             game.Loaded:Wait()
         end
@@ -649,7 +463,7 @@ end},
         player.CharacterAdded:Connect(teleportPlayer)
 end},
 
- {name = "Receptionist (Noclip)", script = function() 
+ {name = "Receptionist", script = function() 
         if not game:IsLoaded() then
             game.Loaded:Wait()
         end
@@ -704,99 +518,6 @@ end},
             end
 
             rootPart.CFrame = CFrame.new(-36, 44, 57)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "On Top Of The Arch", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(25, 170, 7)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Pool", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(200, 44, 42)
-        end
-
-        teleportPlayer()
-
-        player.CharacterAdded:Connect(teleportPlayer)
-end},
-
- {name = "Camping", script = function() 
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        for _, part in pairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name == "StaffArea" then
-                part:Destroy()
-            end
-        end
-
-        local function teleportPlayer()
-            local character = player.Character or player.CharacterAdded:Wait()
-
-            local rootPart = character:FindFirstChild("HumanoidRootPart")
-            while not rootPart do
-                rootPart = character:FindFirstChild("HumanoidRootPart")
-                task.wait()
-            end
-
-            rootPart.CFrame = CFrame.new(270, 46, -142)
         end
 
         teleportPlayer()
