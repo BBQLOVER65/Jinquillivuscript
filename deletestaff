@@ -1,0 +1,34 @@
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+        if player.Name == "FeIlowYeIlow" or player.Name == "FellowYelIow" then
+        return
+        else
+
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name == "StaffArea" then
+                part:Destroy()
+            end
+        end
+
+
+        local function teleportPlayer()
+            local character = player.Character or player.CharacterAdded:Wait()
+
+
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            while not rootPart do
+                rootPart = character:FindFirstChild("HumanoidRootPart")
+                task.wait()
+            end
+
+            --rootPart.CFrame = CFrame.new(57.5, 44, 22)
+        end
+
+
+        teleportPlayer()
+
+        end
