@@ -359,6 +359,11 @@ local buttons = {
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/spychat"))()
 end},
+
+    {name = "Teamspy", script = function()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/teamspy"))()
+    end},
     
     {name = "Fake Chat", script = function()
 
@@ -378,7 +383,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquilliv
     end},
     
     {name = "Fake Cuff", script = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/yaziriscool/sssss/refs/heads/main/Cuff%20Bet"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/cuff"))()
     end},
     
     {name = "Ghost Mode", script = function()
@@ -397,7 +402,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquilliv
         loadstring(game:HttpGet("https://pastebin.com/raw/y9T3mzqD"))()
     end},
     
-    {name = "Item Drone", script = function()
+    {name = "Item Drone (Press R)", script = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/TenTenClown/Jinquilivuscript/refs/heads/main/Prop%20Control"))()
     end},
 
@@ -411,43 +416,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquilliv
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/warnings"))()
     end},
 
-    {name = "Fishing Bot", script = function()
-        local getasset = getsynasset or getcustomasset
-        local Players = game:GetService("Players")
-        local TextChatService = game:GetService("TextChatService")
-        local HttpService = game:GetService("HttpService")
-        local chatChannel = TextChatService.TextChannels.RBXTeamFossil
-
-        -- Note: This is a simplified version of the fishing bot
-        -- The full implementation would include all the fishing logic
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Fishing Bot",
-            Text = "Fishing Bot loaded! Type !play to start fishing.",
-            Duration = 5,
-        })
-
-        -- Basic fishing bot functionality would go here
-        local TextChatService = game:GetService("TextChatService")
-        local Players = game:GetService("Players")
-        local localPlayer = Players.LocalPlayer
-        local channel = TextChatService.TextChannels.RBXGeneral
-
-        spawn(function()
-            while true do
-                for _, player in ipairs(Players:GetPlayers()) do
-                    if player ~= localPlayer then
-                        task.spawn(function()
-                            channel:SendAsync("/w " .. player.Name .. " Hello there!")
-                        end)
-                    end
-                end
-                task.wait(60)
-            end
-        end)
+    {name = "r6", script = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/rigsix"))()
     end},
 
-    {name = "Meditate Animation", script = function()
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/meditate"))()
+    {name = "Superman FLy (Press F)", script = function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/superman"))()
     end},
 
     {name = "Quizbot", script = function()
@@ -458,7 +432,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Damian-11/quizbot/mas
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/tpthingy"))()
     end},
 
-    {name = "SM64 Physics", script = function()
+    {name = "SM64 Physics (NO XENO SUPPORT)", script = function()
   game:GetObjects("rbxassetid://81129576677557")[1].Parent=game.Workspace
 wait(0.1)
 local rbxmSuite = loadstring(game:HttpGetAsync("https://github.com/richie0866/rbxm-suite/releases/latest/download/rbxm-suite.lua"))()
