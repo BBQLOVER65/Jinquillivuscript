@@ -1,0 +1,71 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
+
+local Clr = Color3.fromRGB(0, 255, 0)
+local LocalPlayer = Players.LocalPlayer
+local PublicChats = {} -- [player.UserId] = { ["Message"] = true }
+
+-- Check if a message was public
+local function IsPublic(player, msg)
+    local log = PublicChats[player.UserId]
+    return log and log[msg]
+end
+
+-- Mark a message as public
+local function MarkPublic(player, msg)
+    if not PublicChats[player.UserId] then
+        PublicChats[player.UserId] = {}
+    end
+    PublicChats[player.UserId][msg] = true
+end
+
+-- Log to system chat
+local function Log(name, msg)
+    local systemChannel = TextChatService.TextChannels:FindFirstChild("RBXSystem")
+    if systemChannel then
+        local formatted = string.format(
+            '<font color="rgb(%d,%d,%d)">[%s]: %s</font>',
+            Clr.R * 255, Clr.G * 255, Clr.B * 255, name, msg
+        )
+        TextChatService.TextChannels.RBXTeamFossil:SendAsync("[" .. name .. "]: " .. msg)
+        systemChannel:DisplaySystemMessage(formatted)
+    end
+end
+
+-- Handle when a player joins
+local function onPlayerAdded(player)
+    player.Chatted:Connect(function(message)
+        -- Slight delay to let TextChatService process
+        task.delay(0.3, function()
+            if player ~= LocalPlayer and not IsPublic(player, message) then
+                Log(player.Name, message)
+            end
+        end)
+    end)
+end
+
+-- Track messages going through RBXGeneral
+TextChatService.OnIncomingMessage = function(message)
+    local channel = message.TextChannel
+    local source = message.TextSource
+
+    if channel and channel.Name == "RBXGeneral" and source then
+        local player = Players:GetPlayerByUserId(source.UserId)
+        if player then
+            MarkPublic(player, message.Text)
+        end
+    end
+
+    return nil -- Don't block
+end
+
+-- Setup for current players
+for _, player in ipairs(Players:GetPlayers()) do
+    onPlayerAdded(player)
+end
+
+Players.PlayerAdded:Connect(onPlayerAdded)
