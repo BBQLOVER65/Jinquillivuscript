@@ -1,0 +1,141 @@
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
+-- you can change this value as needed
+local FlySpeed = 80
+
+local flying = false
+local ctrl = { f = 0, b = 0, l = 0, r = 0 }
+local lastctrl = { f = 0, b = 0, l = 0, r = 0 }
+
+local function PlayAnim(id, time, speed)
+    pcall(function()
+        local character = Players.LocalPlayer.Character
+        if not character then return end
+        character.Animate.Disabled = false
+        local hum = character:FindFirstChildOfClass("Humanoid")
+        if not hum then return end
+        local tracks = hum:GetPlayingAnimationTracks()
+        for _, t in pairs(tracks) do t:Stop() end
+        character.Animate.Disabled = true
+        local anim = Instance.new("Animation")
+        anim.AnimationId = "rbxassetid://" .. id
+        local track = hum:LoadAnimation(anim)
+        track:Play()
+        track.TimePosition = time
+        track:AdjustSpeed(speed)
+        track.Stopped:Connect(function()
+            character.Animate.Disabled = false
+            for _, t in pairs(tracks) do t:Stop() end
+        end)
+    end)
+end
+
+local function StopAnim()
+    local character = Players.LocalPlayer.Character
+    if not character then return end
+    character.Animate.Disabled = false
+    local hum = character:FindFirstChildOfClass("Humanoid")
+    if not hum then return end
+    for _, t in pairs(hum:GetPlayingAnimationTracks()) do t:Stop() end
+end
+
+local function Fly()
+    local player = Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local torso = character:WaitForChild("UpperTorso")
+    local hum = character:WaitForChild("Humanoid")
+    local speed = 0
+
+    local bg = Instance.new("BodyGyro", torso)
+    bg.P = 9e4
+    bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+    bg.CFrame = torso.CFrame
+
+    local bv = Instance.new("BodyVelocity", torso)
+    bv.Velocity = Vector3.new(0, 0.1, 0)
+    bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+
+    PlayAnim(10714347256, 4, 0)
+
+    repeat
+        task.wait()
+        hum.PlatformStand = true
+
+        if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+            speed = math.clamp(speed + FlySpeed * 0.1, 0, FlySpeed)
+        elseif speed > 0 then
+            speed = math.max(speed - FlySpeed * 0.1, 0)
+        end
+
+        if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+            bv.Velocity = (
+                workspace.CurrentCamera.CFrame.LookVector * (ctrl.f + ctrl.b)
+                + ((workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * 0.2, 0)).Position
+                   - workspace.CurrentCamera.CFrame.Position)
+            ) * speed
+            lastctrl = { f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r }
+        elseif speed > 0 then
+            bv.Velocity = (
+                workspace.CurrentCamera.CFrame.LookVector * (lastctrl.f + lastctrl.b)
+                + ((workspace.CurrentCamera.CFrame * CFrame.new(lastctrl.l + lastctrl.r, (lastctrl.f + lastctrl.b) * 0.2, 0)).Position
+                   - workspace.CurrentCamera.CFrame.Position)
+            ) * speed
+        else
+            bv.Velocity = Vector3.new(0, 0.1, 0)
+        end
+
+        bg.CFrame = workspace.CurrentCamera.CFrame
+            * CFrame.Angles(-math.rad((ctrl.f + ctrl.b) * 50 * speed / FlySpeed), 0, 0)
+    until not flying
+
+    ctrl = { f = 0, b = 0, l = 0, r = 0 }
+    lastctrl = { f = 0, b = 0, l = 0, r = 0 }
+    bg:Destroy()
+    bv:Destroy()
+    hum.PlatformStand = false
+end
+
+UserInputService.InputBegan:Connect(function(input, gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.F then
+        flying = not flying
+        if flying then
+            Fly()
+        else
+            StopAnim()
+        end
+    elseif flying then
+        if input.KeyCode == Enum.KeyCode.W then
+            ctrl.f = 1
+            PlayAnim(10714177846, 4.65, 0)
+        elseif input.KeyCode == Enum.KeyCode.S then
+            ctrl.b = -1
+            PlayAnim(10147823318, 4.11, 0)
+        elseif input.KeyCode == Enum.KeyCode.A then
+            ctrl.l = -1
+            PlayAnim(10147823318, 3.55, 0)
+        elseif input.KeyCode == Enum.KeyCode.D then
+            ctrl.r = 1
+            PlayAnim(10147823318, 4.81, 0)
+        end
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if flying then
+        if input.KeyCode == Enum.KeyCode.W then
+            ctrl.f = 0
+            PlayAnim(10714347256, 4, 0)
+        elseif input.KeyCode == Enum.KeyCode.S then
+            ctrl.b = 0
+            PlayAnim(10714347256, 4, 0)
+        elseif input.KeyCode == Enum.KeyCode.A then
+            ctrl.l = 0
+            PlayAnim(10714347256, 4, 0)
+        elseif input.KeyCode == Enum.KeyCode.D then
+            ctrl.r = 0
+            PlayAnim(10714347256, 4, 0)
+        end
+    end
+end)
