@@ -1,10 +1,13 @@
 --[[
-      _ _                   _ _ _ _             ____            _       _   
-     | (_)_ __   __ _ _   _(_) | (_)_   ___   _/ ___|  ___ _ __(_)_ __ | |_ 
-  _  | | | '_ \ / _` | | | | | | | \ \ / / | | \___ \ / __| '__| | '_ \| __|
- | |_| | | | | | (_| | |_| | | | | |\ V /| |_| |___) | (__| |  | | |_) | |_ 
-  \___/|_|_| |_|\__, |\__,_|_|_|_|_| \_/  \__,_|____/ \___|_|  |_| .__/ \__|
-                   |_|                                           |_|        
+    ___  ___  ________   ________  ___  ___  ___  ___       ___       ___  ___      ___ ___  ___  ________  ________  ________  ___  ________  _________         _______     
+   |\  \|\  \|\   ___  \|\   __  \|\  \|\  \|\  \|\  \     |\  \     |\  \|\  \    /  /|\  \|\  \|\   ____\|\   ____\|\   __  \|\  \|\   __  \|\___   ___\      /  ___  \    
+   \ \  \ \  \ \  \\ \  \ \  \|\  \ \  \\\  \ \  \ \  \    \ \  \    \ \  \ \  \  /  / | \  \\\  \ \  \___|\ \  \___|\ \  \|\  \ \  \ \  \|\  \|___ \  \_|     /__/|_/  /|   
+ __ \ \  \ \  \ \  \\ \  \ \  \\\  \ \  \\\  \ \  \ \  \    \ \  \    \ \  \ \  \/  / / \ \  \\\  \ \_____  \ \  \    \ \   _  _\ \  \ \   ____\   \ \  \      |__|//  / /   
+|\  \\_\  \ \  \ \  \\ \  \ \  \\\  \ \  \\\  \ \  \ \  \____\ \  \____\ \  \ \    / /   \ \  \\\  \|____|\  \ \  \____\ \  \\  \\ \  \ \  \___|    \ \  \         /  /_/__  
+\ \________\ \__\ \__\\ \__\ \_____  \ \_______\ \__\ \_______\ \_______\ \__\ \__/ /     \ \_______\____\_\  \ \_______\ \__\\ _\\ \__\ \__\        \ \__\       |\________\
+ \|________|\|__|\|__| \|__|\|___| \__\|_______|\|__|\|_______|\|_______|\|__|\|__|/       \|_______|\_________\|_______|\|__|\|__|\|__|\|__|         \|__|        \|_______|
+                                  \|__|                                                             \|_________|                                                             
+         
 
 Credits to Scalp and Fellowyellow
 Brought to you by Jinquillivus Productions
@@ -381,7 +384,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquilliv
     {name = "Scalp Bot", script = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/scalpbot"))()
     end},
-    
+
     {name = "Fake Cuff", script = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/cuff"))()
     end},
@@ -412,15 +415,28 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquilliv
  loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/deletestaff"))()
     end},
 
+    {name = "Remove Gamepass Areas", script = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/gamepass"))()
+    end},
+
+    {name = "Remove Seats", script = function()
+ for _, i in pairs(game.Workspace:GetDescendants()) do
+    if i.ClassName == "Seat" then
+        i.Disabled = true
+    end
+end
+print('done')
+    end},
+
     {name = "See Warnings", script = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/warnings"))()
     end},
 
-    {name = "r6", script = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/rigsix"))()
+    {name = "Senior Evaade", script = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/senior"))()
     end},
 
-    {name = "Superman FLy (Press F)", script = function()
+    {name = "Superman Fly (Press F)", script = function()
   loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/superman"))()
     end},
 
