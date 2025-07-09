@@ -432,7 +432,7 @@ print('done')
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/warnings"))()
     end},
 
-    {name = "Senior Evaade", script = function()
+    {name = "Senior Evade", script = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/BBQLOVER65/Jinquillivuscript/refs/heads/main/senior"))()
     end},
 
